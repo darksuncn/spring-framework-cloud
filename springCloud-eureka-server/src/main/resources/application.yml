@@ -1,0 +1,13 @@
+#server.servlet.context-path: /abc
+name: darksun
+age: 25
+
+spring.application.name: eureka-server
+server.port: 81
+
+eureka.instance.hostname: localhost
+# can not register server as client self
+eureka.client.register-with-eureka: false
+eureka.client.fetch-registry: false
+
+eureka.client.service-url.defaultZone: http://${eureka.instance.hostname}:${server.port}/abc
