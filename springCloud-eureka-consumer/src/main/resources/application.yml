@@ -1,0 +1,4 @@
+spring.application.name: consumer-service
+server.port: 3001
+
+eureka.client.service-url.defaultZone: http://localhost:81/eureka

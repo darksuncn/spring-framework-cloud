@@ -1,4 +1,7 @@
-spring.application.name: eureka-client
+name: darksun
+age: 2
+
+spring.application.name: compute-service
 server.port: 2001
 
 eureka.client.service-url.defaultZone: http://localhost:81/eureka

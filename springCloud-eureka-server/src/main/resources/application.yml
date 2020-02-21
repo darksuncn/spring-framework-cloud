@@ -9,5 +9,6 @@ eureka.instance.hostname: localhost
 # can not register server as client self
 eureka.client.register-with-eureka: false
 eureka.client.fetch-registry: false
-
+# close self preservate
+eureka.server.enableSelfPreservation: false
 eureka.client.service-url.defaultZone: http://${eureka.instance.hostname}:${server.port}/abc
