@@ -2,13 +2,18 @@
 name: darksun
 age: 25
 
+spring.cloud.inetutils.timeout-seconds: 1
 spring.application.name: eureka-server
-server.port: 81
+server.port: 8080
 
-eureka.instance.hostname: localhost
+eureka.instance.hostname: centos7
 # can not register server as client self
 eureka.client.register-with-eureka: false
 eureka.client.fetch-registry: false
 # close self preservate
 eureka.server.enableSelfPreservation: false
 eureka.client.service-url.defaultZone: http://${eureka.instance.hostname}:${server.port}/abc
+
+info.app.name: Spring Actuator Example
+info.app.java.version: 10
+info.app.type: Spring Boot

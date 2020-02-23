@@ -20,6 +20,19 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- update to spring boot 2.1.5 unknow error solution, IDE bug -->
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<java.home>E:\tools\jdk1.8.0_144\jre</java.home>
+		<project.target.directory>.\target</project.target.directory>
+		<project.jar.name>springCloud-eureka-consumer-0.0.1-SNAPSHOT.jar</project.jar.name>
+
+		<project.lib-deployPath>.\deploy\lib</project.lib-deployPath>
+		<project.bin-deployPath>.\deploy\bin</project.bin-deployPath>
+		<project.conf-deployPath>.\deploy\conf</project.conf-deployPath>
+
+		<baseDir>.</baseDir>
+		<scriptDir>${baseDir}\scripts</scriptDir>
+		
 	</properties>
 
 	<dependencies>
@@ -44,6 +57,89 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<build>
+		<plugins>
+			<!--排除resources文件夹-->
+			<plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-jar-plugin</artifactId>
+			   <version>3.0.2</version>
+			   <configuration>
+			      <excludes>
+			         <!--注意这玩意从编译结果目录开始算目录结构-->
+			         <exclude>/**/*.yml</exclude>
+			         <exclude>/**/*.xml</exclude>
+			         <exclude>/**/*.properties</exclude>
+			      </excludes>
+			   </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.lib-deployPath}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-lib-src-webapps</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${project.lib-deployPath}">
+									<fileset dir="${project.target.directory}">
+										<include name="${project.jar.name}" />
+									</fileset>
+								</copy>
+								<copy todir="${project.bin-deployPath}">
+									<fileset dir="${scriptDir}">
+										<include name="*.*" />
+									</fileset>
+								</copy>
+								<copy todir="${project.conf-deployPath}">
+									<fileset dir="${baseDir}/src/main/resources">
+										<include name="*.*" />
+									</fileset>
+								</copy>								
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
