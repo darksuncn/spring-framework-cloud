@@ -32,6 +32,8 @@
 
 		<baseDir>.</baseDir>
 		<scriptDir>${baseDir}\scripts</scriptDir>
+		
+		<sftp.projectPath>/home/ifp/app/springCloud-eureka-server</sftp.projectPath>
 	</properties>
 
 	<dependencies>
@@ -60,6 +62,14 @@
 	</dependencyManagement>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.8</version>
+			</extension>
+		</extensions>	
+	
 		<plugins>
 			<!--排除resources文件夹-->
 			<plugin>
@@ -125,7 +135,6 @@
 										<include name="*.*" />
 									</fileset>
 								</copy>								
-								
 							</tasks>
 						</configuration>
 						<goals>
@@ -134,9 +143,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<fromFile>${project.target.directory}/${project.jar.name}</fromFile>
+					<url>scp://ifp:ifp@192.168.0.208${sftp.projectPath}/lib</url>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
-
-
+	
 </project>

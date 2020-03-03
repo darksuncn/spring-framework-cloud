@@ -32,6 +32,8 @@
 
 		<baseDir>.</baseDir>
 		<scriptDir>${baseDir}\scripts</scriptDir>
+
+		<sftp.projectPath>/home/ifp/app/springCloud-eureka-client</sftp.projectPath>
 	</properties>
 
 	<dependencies>
@@ -42,6 +44,21 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.48</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.10.3</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.45.Final</version>
 		</dependency>
 	</dependencies>
 
@@ -56,22 +73,30 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.8</version>
+			</extension>
+		</extensions>
+
 		<plugins>
-			<!--排除resources文件夹-->
+			<!--排除resources文件夹 -->
 			<plugin>
-			   <groupId>org.apache.maven.plugins</groupId>
-			   <artifactId>maven-jar-plugin</artifactId>
-			   <version>3.0.2</version>
-			   <configuration>
-			      <excludes>
-			         <!--注意这玩意从编译结果目录开始算目录结构-->
-			         <exclude>/**/*.yml</exclude>
-			         <exclude>/**/*.xml</exclude>
-			         <exclude>/**/*.properties</exclude>
-			      </excludes>
-			   </configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<excludes>
+						<!--注意这玩意从编译结果目录开始算目录结构 -->
+						<exclude>/**/*.yml</exclude>
+						<exclude>/**/*.xml</exclude>
+						<exclude>/**/*.properties</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -129,7 +154,7 @@
 									<fileset dir="${baseDir}/src/main/resources">
 										<include name="*.*" />
 									</fileset>
-								</copy>								
+								</copy>
 							</tasks>
 						</configuration>
 						<goals>
@@ -137,6 +162,17 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<fromFile>${project.target.directory}/${project.jar.name}</fromFile>
+					<url>scp://ifp:ifp@192.168.0.208${sftp.projectPath}/lib</url>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

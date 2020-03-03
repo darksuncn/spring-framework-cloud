@@ -14,6 +14,14 @@ public class ComputeServiceApplication {
   public static void main(String[] args) {
   	//new SpringApplicationBuilder(ComputeServiceApplication.class).web(WebApplicationType.NONE).run(args);
   	SpringApplication.run(ComputeServiceApplication.class, args);
+  	
+  	NettyTcpServer nts = new NettyTcpServer();
+  	try {
+			nts.run();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 }	
 
 }
